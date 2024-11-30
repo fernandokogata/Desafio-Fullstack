@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:17.2
-    container_name: postgreSQL
+    container_name: PostgreSQL
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: 123
