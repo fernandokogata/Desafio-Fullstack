@@ -3,19 +3,20 @@
 namespace App\Application\UseCases\Nivel;
 
 use App\Domain\Repositories\NivelRepositoryInterface;
+use Illuminate\Http\Response;
 
-class FindAllNiveisUseCase
+class FindNiveisUseCase
 {
-    private NivelRepositoryInterface $nivelRepository;
+    private NivelRepositoryInterface $repository;
 
-    public function __construct(NivelRepositoryInterface $nivelRepository)
+    public function __construct(NivelRepositoryInterface $repository)
     {
-        $this->nivelRepository = $nivelRepository;
+        $this->repository = $repository;
     }
 
-    public function handle(array|string|null $queryParams): array
+    public function handle(array|string|null $queryParams): array|Response
     {
-        $response = $this->nivelRepository->findAll($queryParams)->toArray();
+        $response = $this->repository->find($queryParams)->toArray();
         return [
             'data' => $response['data'],
             'meta' => [

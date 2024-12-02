@@ -4,19 +4,21 @@ namespace App\Application\UseCases\Nivel;
 
 use App\Domain\Entities\Nivel;
 use App\Domain\Repositories\NivelRepositoryInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 class UpdateNivelUseCase
 {
-    private NivelRepositoryInterface $nivelRepository;
+    private NivelRepositoryInterface $repository;
 
-    public function __construct(NivelRepositoryInterface $nivelRepository)
+    public function __construct(NivelRepositoryInterface $repository)
     {
-        $this->nivelRepository = $nivelRepository;
+        $this->repository = $repository;
     }
 
-    public function handle(Request $request)
+    public function handle(Request $request): JsonResponse|Response
     {
         $validator = Validator::make($request->all(), [
             'id' => 'integer',
@@ -24,12 +26,12 @@ class UpdateNivelUseCase
         ]);
 
         if ($validator->fails()) {
-            return response()->json($request, 400);
+            return response(null, 400);
         }
 
         $nivel = new Nivel();
         $nivel->setId($request->get('id'));
         $nivel->setNivel($request->get('nivel'));
-        return $this->nivelRepository->update($nivel);
+        return $this->repository->update($nivel);
     }
 }

@@ -7,6 +7,7 @@ use App\Application\UseCases\Nivel\DeleteNivelUseCase;
 use App\Infrastructure\Models\NivelModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class DeleteNivelController
 {
@@ -17,7 +18,7 @@ class DeleteNivelController
         $this->deleteNivelUseCase = $deleteNivelUseCase;
     }
 
-    public function delete(int $id): JsonResponse
+    public function delete(int $id): JsonResponse|Response
     {
         return $this->deleteNivelUseCase->handle($id);
     }

@@ -10,37 +10,41 @@ use Illuminate\Database\Eloquent\Builder;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class EloquentNivelRepository implements NivelRepositoryInterface
 {
 
-    public function create(Nivel $nivel): NivelModel|JsonResponse
+    public function create(Nivel $nivel): NivelModel|JsonResponse|Response
     {
         try {
             return NivelModel::create([
                 'nivel' => $nivel->getNivel()
             ]);
         } catch (Exception $e) {
-            return response()->json($nivel->value(), 400);
+            return response(null, 400);
         }
     }
 
-    public function update(Nivel $nivel): JsonResponse
+    public function update(Nivel $nivel): JsonResponse|Response
     {
         try {
             $nivelModel = NivelModel::find($nivel->getId());
+            if(!$nivelModel) {
+                return response(null, 400);
+            }
             $nivelModel->nivel = $nivel->getNivel();
             if ($nivelModel->update()) {
                 return response()->json($nivel->value());
             }
         } catch (Exception $e) {
-            return response()->json($nivel->value(), 400);
+            return response(null, 400);
         }
-        return response()->json($nivel->value(), 400);
+        return response(null, 400);
     }
 
-    public function findAll(array|string|null $queryParams): LengthAwarePaginator|Collection|JsonResponse
+    public function find(array|string|null $queryParams): LengthAwarePaginator|Collection|JsonResponse|Response
     {
         $orderBy = ['asc', 'desc'];
         $columns = ['id', 'nivel'];
@@ -52,9 +56,9 @@ class EloquentNivelRepository implements NivelRepositoryInterface
                 if ($response->toArray() != null) {
                     return $response;
                 }
-                return response()->json([], 404);
+                return response(null, 404);
             } catch (Exception $e) {
-                return response()->json('Erro ao buscar níveis: ' . $e->getMessage(), 400);
+                return response(null, 400);
             }
         }
 
@@ -65,19 +69,19 @@ class EloquentNivelRepository implements NivelRepositoryInterface
         return $query->paginate($queryParams['limit'] ?? 10);
     }
 
-    public function delete(int $id): JsonResponse
+    public function delete(int $id): JsonResponse|Response
     {
         try {
             if (NivelModel::destroy($id)) {
-                return response()->json([], 204);
+                return response()->noContent();
             }
         } catch (Exception $e) {
-            return response()->json([], 400);
+            return response(null, 400);
         }
-        return response()->json([], 400);
+        return response(null, 400);
     }
 
-    private function orderBy(Builder $query, array $queryParams, array $orderBy, array $columns): void
+    private function orderBy(Builder $query, array|string $queryParams, array $orderBy, array $columns): void
     {
         if (isset($queryParams['order_direction']) &&
             in_array($queryParams['order_direction'], $orderBy) &&

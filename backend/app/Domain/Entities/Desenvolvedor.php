@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\Entities;
 
-use App\Domain\ValueObjects\Sexo;
 use DateTimeInterface;
+use Illuminate\Support\Facades\Date;
 
 class Desenvolvedor
 {
     private int $id;
     private int $nivel_id;
     private string $nome;
-    private Sexo $sexo;
+    private string $sexo;
     private DateTimeInterface $data_nascimento;
     private string $hobby;
 
@@ -49,12 +49,12 @@ class Desenvolvedor
         return $this;
     }
 
-    public function getSexo(): Sexo
+    public function getSexo(): string
     {
         return $this->sexo;
     }
 
-    public function setSexo(Sexo $sexo): Desenvolvedor
+    public function setSexo(string $sexo): Desenvolvedor
     {
         $this->sexo = $sexo;
         return $this;
@@ -82,4 +82,15 @@ class Desenvolvedor
         return $this;
     }
 
+    public function value(): array
+    {
+        return [
+            'id' => $this->id ?? null,
+            'nivel_id' => $this->nivel_id,
+            'nome' => $this->nome,
+            'sexo' => $this->sexo,
+            'data_nascimento' => $this->data_nascimento,
+            'hobby' => $this->hobby,
+        ];
+    }
 }

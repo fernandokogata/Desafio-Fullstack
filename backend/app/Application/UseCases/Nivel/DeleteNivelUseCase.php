@@ -4,6 +4,7 @@ namespace App\Application\UseCases\Nivel;
 
 use App\Domain\Repositories\NivelRepositoryInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class DeleteNivelUseCase
 {
@@ -14,7 +15,7 @@ class DeleteNivelUseCase
         $this->nivelRepository = $nivelRepository;
     }
 
-    public function handle(int $id): JsonResponse
+    public function handle(int $id): JsonResponse|Response
     {
         return $this->nivelRepository->delete($id);
     }
