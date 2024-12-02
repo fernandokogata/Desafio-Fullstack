@@ -17,6 +17,7 @@ class FindDesenvolvedoresController
 
     public function find(Request $request): array|Response
     {
-        return $this->findDesenvolvedorUseCase->handle($request);
+        $queryParams = $request->query();
+        return $this->findDesenvolvedorUseCase->handle($queryParams);
     }
 }
