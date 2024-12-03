@@ -86,7 +86,7 @@ class EloquentDesenvolvedorRepository implements DesenvolvedorRepositoryInterfac
                 Carbon::createFromTimestamp($queryParams['data_nascimento_maior']));
         }
         $this->orderBy($query, $queryParams, $orderBy, $columns);
-        return $query->paginate($queryParams['limit'] ?? 10);
+        return $query->with('nivel')->paginate($queryParams['limit'] ?? 10);
     }
 
     public function delete(int $id): JsonResponse|Response

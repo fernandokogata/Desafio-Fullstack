@@ -13,10 +13,11 @@ class NivelModel extends Model
     protected $table = 'niveis';
     protected $fillable = ['nivel'];
     protected $primaryKey = 'id';
+    protected $foreignKey = 'nivel_id';
     public $timestamps = false;
 
     public function desenvolvedor()
     {
-//        return $this->belongsTo(DesenvolvedorModel)
+        return $this->belongsTo(DesenvolvedorModel::class , 'nivel_id');
     }
 }
