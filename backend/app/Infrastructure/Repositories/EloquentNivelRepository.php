@@ -66,7 +66,7 @@ class EloquentNivelRepository implements NivelRepositoryInterface
             $query->where('nivel', 'like', '%' . $queryParams['nivel'] . '%');
         }
         $this->orderBy($query, $queryParams, $orderBy, $columns);
-        return $query->paginate($queryParams['limit'] ?? 10);
+        return $query->withCount('desenvolvedor')->paginate($queryParams['limit'] ?? 10);
     }
 
     public function delete(int $id): JsonResponse|Response

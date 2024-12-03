@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static create(array $array)
@@ -16,8 +17,8 @@ class NivelModel extends Model
     protected $foreignKey = 'nivel_id';
     public $timestamps = false;
 
-    public function desenvolvedor()
+    public function desenvolvedor(): HasMany
     {
-        return $this->belongsTo(DesenvolvedorModel::class , 'nivel_id');
+        return $this->hasMany(DesenvolvedorModel::class , 'nivel_id');
     }
 }
