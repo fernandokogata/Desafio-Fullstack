@@ -5,8 +5,16 @@
       <div class="search-row">
         <div>
           <mat-form-field appearance="outline" class="search">
-            <mat-label>Buscar por Nível</mat-label>
+            <mat-label>Buscar por:</mat-label>
             <input matInput [formControl]="form.controls.search" required>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Coluna</mat-label>
+            <mat-select [formControl]="form.controls.columns">
+              @for (searchColumn of searchColumns; track searchColumn.value) {
+              <mat-option [value]="searchColumn.value">{{searchColumn.label}}</mat-option>
+              }
+            </mat-select>
           </mat-form-field>
           <button mat-button class="search-button" type="submit">Buscar</button>
         </div>

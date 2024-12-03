@@ -8,6 +8,14 @@
         <input matInput [formControl]="form.controls.id"/>
       </mat-form-field>
       <mat-form-field appearance="outline">
+        <mat-label>Nivel</mat-label>
+        <mat-select [formControl]="form.controls.nivel_id">
+          @for (nivel of niveis; track nivel.id) {
+          <mat-option [value]="nivel.id">{{nivel.nivel}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Nome</mat-label>
         <input matInput [formControl]="form.controls.nome" type="text"/>
           @if (form.controls.nome.invalid) {
@@ -17,8 +25,8 @@
       <mat-form-field appearance="outline">
         <mat-label>Sexo</mat-label>
         <mat-select [formControl]="form.controls.sexo">
-          @for (sexos of sexos; track sexos) {
-          <mat-option [value]="sexos.value">{{sexos.label}}</mat-option>
+          @for (sexo of sexos; track sexos) {
+          <mat-option [value]="sexo.value">{{sexo.label}}</mat-option>
           }
         </mat-select>
       </mat-form-field>

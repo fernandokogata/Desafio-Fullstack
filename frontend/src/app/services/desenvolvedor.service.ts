@@ -12,12 +12,13 @@ export class DesenvolvedorService {
 
   constructor() { }
 
-  getAllDesenvolvedores(pageSize: number, pageIndex: number, search?: string): Observable<any> {
-    let query = ''
-    if(search && search != '') {
-      query = `&nivel=${search}`
+  getAllDesenvolvedores(pageSize: number, pageIndex: number, search?: string, orderColumn?: string, orderDirection?: string): Observable<any> {
+    let query: string = ''
+    query += search
+    if(orderColumn && orderDirection) {
+      query += `&order_column${orderColumn}$order_direction${orderDirection}`
     }
-    return this.http.get(`http://localhost:8000/api/desenvolvedores?limit=${pageSize}&page=${pageIndex + 1}${query}`)
+    return this.http.get(`http://localhost:8000/api/desenvolvedores?limit=${pageSize}&page=${pageIndex + 1}${search}`)
   }
 
   createDesenvolvedor(desenvolvedor: Desenvolvedor): Observable<any> {

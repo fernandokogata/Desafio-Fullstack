@@ -11,6 +11,8 @@ import { DialogComponent } from '../../../shared/components/dialog/dialog-confir
 import { Desenvolvedor } from '../../../shared/interfaces/desenvolvedor';
 import { DesenvolvedorService } from '../../../services/desenvolvedor.service';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { Nivel } from '../../../shared/interfaces/nivel';
+import { NivelService } from '../../../services/nivel.service';
 
 @Component({
   selector: 'app-modal-desenvolvedor',
@@ -36,6 +38,7 @@ export class ModalDesenvolvedorComponent implements OnInit {
 
   fb = inject(FormBuilder)
   desenvolvedorService = inject(DesenvolvedorService)
+  nivelService = inject(NivelService)
 
   form = this.fb.nonNullable.group({
     id: [{ value: 0, disabled: true }],
@@ -52,11 +55,12 @@ export class ModalDesenvolvedorComponent implements OnInit {
   ];
 
   text: string = ''
+  niveis: Nivel[] = []
 
   ngOnInit(): void {
     if (this.data) {
       this.form.controls.id.setValue(this.data.id!)
-      this.form.controls.nivel_id.setValue(Number(this.data.nivel_id))
+      this.form.controls.nivel_id.setValue(Number(this.data.nivel?.id))
       this.form.controls.nome.setValue(this.data.nome)
       this.form.controls.sexo.setValue(this.data.sexo)
       this.form.controls.data_nascimento.setValue(this.data.data_nascimento)
@@ -66,7 +70,12 @@ export class ModalDesenvolvedorComponent implements OnInit {
     } else {
       this.text = 'Criar'
     }
+    this.getNiveis()
+  }
 
+  getNiveis():void {
+    this.nivelService.getAllNiveis(999999, 0)
+      .subscribe((result) => this.niveis = result.data)
   }
 
   onCancel(): void {
@@ -74,49 +83,42 @@ export class ModalDesenvolvedorComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('TESTE:', {
-      // id: this.form.controls.id.value,
-      nivel_id: this.form.controls.nivel_id.value,
-      nome: this.form.controls.nome.value,
-      sexo: this.form.controls.sexo.value,
-      data_nascimento: this.form.controls.data_nascimento.value,
-      hobby: this.form.controls.hobby.value
-    })
-    
-    // if (!this.form.controls.id.value &&
-    //   this.form.controls.data_nascimento.value &&
-    //   this.form.controls.nome.value != '' &&
-    //   this.form.controls.sexo.value != '' &&
-    //   this.form.controls.hobby.value != '') {
-    //   this.desenvolvedorService.createDesenvolvedor({
-    //     id: null,
-    //     nivel_id: this.form.controls.nivel_id.value,
-    //     nome: this.form.controls.nome.value,
-    //     sexo: this.form.controls.sexo.value,
-    //     data_nascimento: this.form.controls.data_nascimento.value,
-    //     hobby: this.form.controls.hobby.value
-    //   })
-    //     .subscribe({
-    //       next: (response) => this.openDialog({ title: 'Sucesso!', message: `Desenvolvedor: ${response.nome} \n criado com sucesso.`, success: true })
-    //     })
-    // }
-    // if (this.form.controls.id.value &&
-    //   this.form.controls.data_nascimento.value &&
-    //   this.form.controls.nome.value != '' &&
-    //   this.form.controls.sexo.value != '' &&
-    //   this.form.controls.hobby.value != '') {
-    //   this.desenvolvedorService.updateDesenvolvedor({
-        // id: this.form.controls.id.value,
-        // nivel_id: this.form.controls.nivel_id.value,
-        // nome: this.form.controls.nome.value,
-        // sexo: this.form.controls.sexo.value,
-        // data_nascimento: this.form.controls.data_nascimento.value,
-        // hobby: this.form.controls.hobby.value
-    //   })
-    //     .subscribe({
-    //       next: (response) => this.openDialog({ title: 'Sucesso!', message: `Desenvolvedor: ${response.nome} \n alterado com sucesso.`, success: true })
-    //     })
-    // }
+    if (!this.form.controls.id.value &&
+      this.form.controls.data_nascimento.value &&
+      this.form.controls.nivel_id &&
+      this.form.controls.nome.value != '' &&
+      this.form.controls.sexo.value != '' &&
+      this.form.controls.hobby.value != '') {
+      this.desenvolvedorService.createDesenvolvedor({
+        id: null,
+        nivel_id: this.form.controls.nivel_id.value,
+        nome: this.form.controls.nome.value,
+        sexo: this.form.controls.sexo.value,
+        data_nascimento: this.form.controls.data_nascimento.value,
+        hobby: this.form.controls.hobby.value
+      })
+        .subscribe({
+          next: (response) => this.openDialog({ title: 'Sucesso!', message: `Desenvolvedor: ${response.nome} \n criado com sucesso.`, success: true })
+        })
+    }
+    if (this.form.controls.id.value &&
+      this.form.controls.data_nascimento.value &&
+      this.form.controls.nivel_id &&
+      this.form.controls.nome.value != '' &&
+      this.form.controls.sexo.value != '' &&
+      this.form.controls.hobby.value != '') {
+      this.desenvolvedorService.updateDesenvolvedor({
+        id: this.form.controls.id.value,
+        nivel_id: this.form.controls.nivel_id.value,
+        nome: this.form.controls.nome.value,
+        sexo: this.form.controls.sexo.value,
+        data_nascimento: this.form.controls.data_nascimento.value,
+        hobby: this.form.controls.hobby.value
+      })
+        .subscribe({
+          next: (response) => this.openDialog({ title: 'Sucesso!', message: `Desenvolvedor: ${response.nome} \n alterado com sucesso.`, success: true })
+        })
+    }
   }
 
   openDialog(modal: Modal): void {

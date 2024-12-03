@@ -10,8 +10,6 @@ export class NivelService {
 
   http = inject(HttpClient)
 
-  constructor() { }
-
   getAllNiveis(pageSize: number, pageIndex: number, search?: string): Observable<any> {
     let query = ''
     if(search && search != '') {

@@ -18,6 +18,7 @@ import { UtilsComponent } from '../../shared/utils/utils';
 import { Desenvolvedor } from '../../shared/interfaces/desenvolvedor';
 import { DesenvolvedorService } from '../../services/desenvolvedor.service';
 import { ModalDesenvolvedorComponent } from './modal-desenvolvedor/modal-desenvolvedor.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-desenvolvedor',
@@ -32,7 +33,8 @@ import { ModalDesenvolvedorComponent } from './modal-desenvolvedor/modal-desenvo
     MatDividerModule,
     MatTableModule,
     MatSortModule,
-    MatPaginator
+    MatPaginator,
+    MatSelectModule
   ],
   templateUrl: './desenvolvedor.component.html',
   styleUrl: './desenvolvedor.component.scss'
@@ -52,8 +54,14 @@ export class DesenvolvedorComponent {
 
   form = this.fb.nonNullable.group({
     search: ['', Validators.required],
+    columns: ['', Validators.required]
   })
 
+  searchColumns = [
+    { value: 'nome', label: 'Nome' },
+    { value: 'sexo', label: 'Sexo' },
+    { value: 'hobby', label: 'Hobby' }
+  ]
   displayedColumns = ['id', 'nivel', 'nome', 'sexo', 'data_nascimento', 'hobby', 'actions']
   dataSource: Desenvolvedor[] = []
   sortedData: Desenvolvedor[] = []
@@ -63,7 +71,7 @@ export class DesenvolvedorComponent {
   }
 
   async refresh(pageEvent: PageEvent = { length: 0, pageSize: 10, pageIndex: 0 }): Promise<void> {
-    await this.desenvolvedorService.getAllDesenvolvedores(pageEvent.pageSize, pageEvent.pageIndex, this.form.controls.search.value )
+    await this.desenvolvedorService.getAllDesenvolvedores(pageEvent.pageSize, pageEvent.pageIndex, `&${this.form.controls.columns.value}=${this.form.controls.search.value}`)
       .subscribe((response: any) => {
         this.dataSource = response.data
         this.sortedData = this.dataSource.slice()
@@ -97,8 +105,8 @@ export class DesenvolvedorComponent {
   }
 
   async filter(): Promise<void> {
-    if(this.form.valid) {
-      this.desenvolvedorService.getAllDesenvolvedores(10, 0, this.form.controls.search.value)
+    if (this.form.valid) {
+      this.desenvolvedorService.getAllDesenvolvedores(10, 0, `&${this.form.controls.columns.value}=${this.form.controls.search.value}`)
         .subscribe((response: any) => {
           this.dataSource = response.data
           this.sortedData = this.dataSource.slice()
@@ -112,7 +120,7 @@ export class DesenvolvedorComponent {
       disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         this.refresh()
       }
     })
@@ -124,7 +132,7 @@ export class DesenvolvedorComponent {
       disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         this.refresh()
       }
     })
@@ -132,14 +140,14 @@ export class DesenvolvedorComponent {
 
   openDeleteDialog(desenvolvedor: Desenvolvedor): void {
     const dialogRef = this.dialog.open(ModalConfirmationComponent, {
-      data: {title: 'Deletar', message: `Deseja realmente deletar o Desenvolvedor: ${desenvolvedor.nome}?`, success: true},
+      data: { title: 'Deletar', message: `Deseja realmente deletar o Desenvolvedor: ${desenvolvedor.nome}?`, success: true },
       disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         this.desenvolvedorService.deleteDesenvolvedor(desenvolvedor.id!).subscribe({
-          next: () => this.openDialog({title: 'Sucesso!', message: `Desenvolvedor ${desenvolvedor.nome} excluído com sucesso!.`, success: true}),
-          error: () => this.openDialog({title: 'Falha!', message: `Não foi possível deletar o desenvolvedor ${desenvolvedor.nome}.`, success: false})
+          next: () => this.openDialog({ title: 'Sucesso!', message: `Desenvolvedor ${desenvolvedor.nome} excluído com sucesso!.`, success: true }),
+          error: () => this.openDialog({ title: 'Falha!', message: `Não foi possível deletar o desenvolvedor ${desenvolvedor.nome}.`, success: false })
         })
       }
     })
