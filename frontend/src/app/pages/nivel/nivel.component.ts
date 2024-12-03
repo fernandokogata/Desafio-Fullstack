@@ -55,7 +55,7 @@ export class NivelComponent implements OnInit {
     search: ['', Validators.required],
   })
 
-  displayedColumns = ['id', 'nivel', 'actions']
+  displayedColumns = ['id', 'nivel', 'desenvolvedor_count', 'actions']
   dataSource: Nivel[] = []
   sortedData: Nivel[] = []
 

@@ -65,13 +65,15 @@ export class DesenvolvedorComponent {
   displayedColumns = ['id', 'nivel', 'nome', 'sexo', 'data_nascimento', 'hobby', 'actions']
   dataSource: Desenvolvedor[] = []
   sortedData: Desenvolvedor[] = []
+  sortColumn: string = ''
+  sortDirection: string = ''
 
   ngOnInit(): void {
     this.refresh()
   }
 
   async refresh(pageEvent: PageEvent = { length: 0, pageSize: 10, pageIndex: 0 }): Promise<void> {
-    await this.desenvolvedorService.getAllDesenvolvedores(pageEvent.pageSize, pageEvent.pageIndex, `&${this.form.controls.columns.value}=${this.form.controls.search.value}`)
+    await this.desenvolvedorService.getAllDesenvolvedores(pageEvent.pageSize, pageEvent.pageIndex, `&${this.form.controls.columns.value}=${this.form.controls.search.value}`, this.sortColumn, this.sortDirection)
       .subscribe((response: any) => {
         this.dataSource = response.data
         this.sortedData = this.dataSource.slice()
@@ -80,33 +82,14 @@ export class DesenvolvedorComponent {
   }
 
   sortData(sort: Sort): void {
-    const data = this.dataSource.slice()
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = data
-      return
-    }
-    this.sortedData = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc'
-      switch (sort.active) {
-        case 'id':
-          return this.utilsComponent.compare(Number(a.id), Number(b.id), isAsc)
-        case 'nivel_id':
-          return this.utilsComponent.compare(a.nivel_id, b.nivel_id, isAsc)
-        case 'sexo':
-          return this.utilsComponent.compare(a.sexo, b.sexo, isAsc)
-        case 'data_nascimento':
-          return this.utilsComponent.compare(new Date(a.data_nascimento), new Date(b.data_nascimento), isAsc)
-        case 'hobby':
-          return this.utilsComponent.compare(new Date(a.data_nascimento), new Date(b.data_nascimento), isAsc)
-        default:
-          return 0
-      }
-    })
+    this.sortColumn = sort.active
+    this.sortDirection = sort.direction
+    this.refresh()
   }
 
   async filter(): Promise<void> {
     if (this.form.valid) {
-      this.desenvolvedorService.getAllDesenvolvedores(10, 0, `&${this.form.controls.columns.value}=${this.form.controls.search.value}`)
+      this.desenvolvedorService.getAllDesenvolvedores(10, 0, `&${this.form.controls.columns.value}=${this.form.controls.search.value}`, this.sortColumn, this.sortDirection)
         .subscribe((response: any) => {
           this.dataSource = response.data
           this.sortedData = this.dataSource.slice()

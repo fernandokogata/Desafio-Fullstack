@@ -16,9 +16,12 @@ export class DesenvolvedorService {
     let query: string = ''
     query += search
     if(orderColumn && orderDirection) {
-      query += `&order_column${orderColumn}$order_direction${orderDirection}`
+      console.log('ORDER C:', orderColumn)
+      console.log('ORDER D:', orderDirection)
+      query += `&order_column=${orderColumn}&order_direction=${orderDirection}`
+      console.log('query:', query)
     }
-    return this.http.get(`http://localhost:8000/api/desenvolvedores?limit=${pageSize}&page=${pageIndex + 1}${search}`)
+    return this.http.get(`http://localhost:8000/api/desenvolvedores?limit=${pageSize}&page=${pageIndex + 1}${query}`)
   }
 
   createDesenvolvedor(desenvolvedor: Desenvolvedor): Observable<any> {

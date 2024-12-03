@@ -26,6 +26,10 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header="nivel"> Nível </th>
           <td mat-cell *matCellDef="let element"> {{element.nivel}} </td>
         </ng-container>
+        <ng-container matColumnDef="desenvolvedor_count">
+          <th mat-header-cell *matHeaderCellDef> Devs Associados </th>
+          <td mat-cell *matCellDef="let element"> {{element.desenvolvedor_count}} </td>
+        </ng-container>
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Ações </th>
           <td mat-cell *matCellDef="let element">
