@@ -13,6 +13,7 @@ import { DesenvolvedorService } from '../../../services/desenvolvedor.service';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { Nivel } from '../../../shared/interfaces/nivel';
 import { NivelService } from '../../../services/nivel.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal-desenvolvedor',
@@ -37,6 +38,7 @@ export class ModalDesenvolvedorComponent implements OnInit {
   readonly dialog = inject(MatDialog)
 
   fb = inject(FormBuilder)
+  router = inject(Router)
   desenvolvedorService = inject(DesenvolvedorService)
   nivelService = inject(NivelService)
 
@@ -75,7 +77,14 @@ export class ModalDesenvolvedorComponent implements OnInit {
 
   getNiveis():void {
     this.nivelService.getAllNiveis(999999, 0)
-      .subscribe((result) => this.niveis = result.data)
+      .subscribe((result) =>  {
+        if(result.data.length > 0) {
+          this.niveis = result.data
+        } else {
+          this.openDialog({ title: 'Atenção!', message: `Cadastre ao menos 1(UM) nível para prosseguir.`, success: true })
+          this.router.navigate(['/niveis'])
+        }
+      })
   }
 
   onCancel(): void {
