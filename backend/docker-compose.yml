@@ -1,4 +1,21 @@
 services:
+
+  postgres:
+    image: postgres:17.2
+    container_name: PostgreSQL
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: postgres
+      POSTGRES_DB: backend
+    ports:
+      - 5434:5432
+    volumes:
+      - ../data/postgres:/var/lib/postgresql/data
+      - ../create-db.sql:/docker-entrypoint-initdb.d/create_database.sql
+    networks:
+      - postgres
+
   app:
     build:
       args:
@@ -11,7 +28,7 @@ services:
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
-      - ./:/var/www
+      - ../backend:/var/www
     networks:
       - postgres
 
@@ -26,6 +43,7 @@ services:
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - postgres
+
 networks:
   postgres:
     driver: bridge
