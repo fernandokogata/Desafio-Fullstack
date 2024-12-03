@@ -27,7 +27,7 @@ class EloquentDesenvolvedorRepository implements DesenvolvedorRepositoryInterfac
                 'hobby' => $desenvolvedor->getHobby()
             ]);
         } catch (Exception $exception) {
-            return response(null, 400);
+            return response('Erro ao criar Desenvolvedor.', 400);
         }
     }
 
@@ -36,7 +36,7 @@ class EloquentDesenvolvedorRepository implements DesenvolvedorRepositoryInterfac
         try {
             $desenvolvedorModel = DesenvolvedorModel::find($desenvolvedor->getId());
             if(!$desenvolvedorModel) {
-                return response(null, 400);
+                return response('Desenvolvedor não encontrado.', 400);
             }
             $desenvolvedorModel->nivel_id = $desenvolvedor->getNivelId();
             $desenvolvedorModel->nome = $desenvolvedor->getNome();
@@ -47,9 +47,9 @@ class EloquentDesenvolvedorRepository implements DesenvolvedorRepositoryInterfac
                 return response()->json($desenvolvedor->value());
             }
         } catch (Exception $e) {
-            return response(null, 400);
+            return response('Erro ao atualizar Desenvolvedor.', 400);
         }
-        return response(null, 400);
+        return response('Erro ao buscar desenvolvedor.', 400);
     }
 
     public function find(array|string|null $queryParams): LengthAwarePaginator|Collection|JsonResponse|Response
@@ -96,9 +96,9 @@ class EloquentDesenvolvedorRepository implements DesenvolvedorRepositoryInterfac
                 return response()->noContent();
             }
         } catch (Exception $e) {
-            return response(null, 400);
+            return response('Erro ao deletar Desenvolvedor.', 400);
         }
-        return response(null, 400);
+        return response('Erro ao deletar Desenvolvedor.', 400);
     }
 
     private function orderBy(Builder $query, array|string $queryParams, array $orderBy, array $columns): void

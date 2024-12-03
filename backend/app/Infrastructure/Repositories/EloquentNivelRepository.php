@@ -23,7 +23,7 @@ class EloquentNivelRepository implements NivelRepositoryInterface
                 'nivel' => $nivel->getNivel()
             ]);
         } catch (Exception $e) {
-            return response(null, 400);
+            return response('Erro ao criar Nível.', 400);
         }
     }
 
@@ -32,16 +32,16 @@ class EloquentNivelRepository implements NivelRepositoryInterface
         try {
             $nivelModel = NivelModel::find($nivel->getId());
             if(!$nivelModel) {
-                return response(null, 400);
+                return response('Nível não encontrado..', 400);
             }
             $nivelModel->nivel = $nivel->getNivel();
             if ($nivelModel->update()) {
                 return response()->json($nivel->value());
             }
         } catch (Exception $e) {
-            return response(null, 400);
+            return response('Erro ao atualizar nível.', 400);
         }
-        return response(null, 400);
+        return response('Erro ao atualizar nivel.', 400);
     }
 
     public function find(array|string|null $queryParams): LengthAwarePaginator|Collection|JsonResponse|Response
@@ -56,9 +56,9 @@ class EloquentNivelRepository implements NivelRepositoryInterface
                 if ($response->toArray() != null) {
                     return $response;
                 }
-                return response(null, 404);
+                return response('Não há Niveis cadastrados.', 404);
             } catch (Exception $e) {
-                return response(null, 400);
+                return response('Erro ao buscar Níveis.', 400);
             }
         }
 
@@ -76,9 +76,9 @@ class EloquentNivelRepository implements NivelRepositoryInterface
                 return response()->noContent();
             }
         } catch (Exception $e) {
-            return response(null, 400);
+            return response('Erro ao deletar Nível.', 400);
         }
-        return response(null, 400);
+        return response('Erro ao deletar Nível.', 400);
     }
 
     private function orderBy(Builder $query, array|string $queryParams, array $orderBy, array $columns): void
