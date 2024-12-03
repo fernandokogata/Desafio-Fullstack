@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      args:
+        user: ogata
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: backend:1.0.0
+    container_name: backend
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - postgres
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - postgres
+networks:
+  postgres:
+    driver: bridge
