@@ -1,4 +1,5 @@
 services:
+
   postgres:
     image: postgres:17.2
     container_name: PostgreSQL
@@ -12,3 +13,48 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
       - ./create-db.sql:/docker-entrypoint-initdb.d/create_database.sql
+    networks:
+      - postgres
+
+  app:
+    build:
+      args:
+        user: ogata
+        uid: 1000
+      context: ./backend
+      dockerfile: Dockerfile
+    image: backend:1.0.0
+    container_name: backend
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./backend:/var/www
+    networks:
+      - postgres
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./backend:/var/www
+      - ./backend/docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - postgres
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: frontend:1.0.0
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - 100:80
+
+networks:
+  postgres:
+    driver: bridge
+
