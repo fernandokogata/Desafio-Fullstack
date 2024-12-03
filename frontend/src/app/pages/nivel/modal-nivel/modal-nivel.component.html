@@ -1,0 +1,23 @@
+<div class="dialog-container">
+  <h3 class="header-text">{{this.text}} Nível</h3>
+  <mat-divider></mat-divider>
+  <mat-dialog-content>
+    <form class="nivel-form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>ID</mat-label>
+        <input matInput [formControl]="form.controls.id"/>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nível</mat-label>
+        <input matInput [formControl]="form.controls.nivel" type="text"/>
+          @if (form.controls.nivel.invalid) {
+            <mat-error>Digite um nível válido!</mat-error>
+          }
+      </mat-form-field>
+      <div class="button-field">
+        <button mat-flat-button type="submit" class="button-create">{{this.text}}</button>
+        <button mat-flat-button type="button" class="button-close" (click)="onCancel()">Fechar</button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

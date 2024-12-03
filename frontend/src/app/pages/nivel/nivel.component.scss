@@ -1,0 +1,74 @@
+@use '@angular/material' as mat;
+
+form {
+  width: 100%;
+}
+
+table{
+  width: 100%;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1%
+}
+
+.card-content {
+  @include mat.elevation(02);
+  padding: 30px;
+  width: 100%;
+  height: 100%;
+}
+
+.table-material {
+  position: relative;
+}
+
+.table-container {
+  position: relative;
+  overflow: auto;
+}
+
+.search-button {
+  margin-left: 10px;
+  height: 56px;
+  width: 150px;
+  border-radius: 5px;
+  background-color: #38a9f9;
+  color: white !important
+}
+
+.create-button {
+  margin-left: 10px;
+  height: 56px;
+  width: 150px;
+  border-radius: 5px;
+  background-color: #23b63b;
+  color: white !important
+}
+
+.update-button {
+  border-radius: 5px;
+  background-color: #38a9f9 !important;
+  color: white !important;
+}
+
+.delete-button {
+  margin-left: 10px;
+  border-radius: 5px;
+  background-color: red !important;
+  color: white !important;
+}
+
+.action-button {
+  border-radius: 5px;
+}
+
+.search-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

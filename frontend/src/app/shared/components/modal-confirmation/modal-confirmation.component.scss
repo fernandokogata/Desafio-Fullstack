@@ -1,0 +1,34 @@
+.dialog-container {
+  padding: 20px;
+  justify-content: center;
+  text-align: center;
+}
+
+.nivel-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-text {
+  font-weight: 500;
+}
+
+.button-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 30px;
+
+  .button-delete {
+    background-color: green;
+    margin-right: 10px;
+    border-radius: 5px;
+    width: 100px;
+  }
+
+  .button-close {
+    background-color: red;
+    border-radius: 5px;
+    width: 100px;
+  }
+}

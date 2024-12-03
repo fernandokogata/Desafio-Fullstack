@@ -1,0 +1,42 @@
+<mat-toolbar class="header">
+  <div class="logo-menu">
+    <button mat-icon-button (click)="drawer.toggle()">
+      <mat-icon class="item-list-white">menu</mat-icon>
+    </button>
+  </div>
+  <div class="item-list-white">
+    <span>{{getRouteTitle()}}</span>
+  </div>
+  <div></div>
+</mat-toolbar>
+<mat-drawer-container>
+  <mat-drawer #drawer mode="over" class="drawer">
+    <mat-list>
+      <mat-list-item>
+        <div class="item-list">
+          <span class="item-list-black text-side">Menu</span>
+        </div>
+      </mat-list-item>
+      <mat-nav-list>
+        <mat-divider></mat-divider>
+        <mat-list-item routerLink="/desenvolvedores" routerLinkActive="active" (click)="drawer.toggle()">
+          <div class="item-list">
+            <mat-icon class="item-list-black">person</mat-icon>
+            <span class="item-list-black text-side">Desenvolvedores</span>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item routerLink="/niveis" routerLinkActive="active" (click)="drawer.toggle()">
+          <div class="item-list">
+            <mat-icon class="item-list-black">apartment</mat-icon>
+            <span class="item-list-black text-side">Níveis</span>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-nav-list>
+    </mat-list>
+  </mat-drawer>
+  <mat-drawer-content class="content">
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

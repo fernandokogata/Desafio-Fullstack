@@ -1,0 +1,10 @@
+<div class="modal-container">
+  <h3>{{data.title}}</h3>
+  <p>{{data.message}}</p>
+  @if (data.success) {
+    <button mat-flat-button class="ok-button" (click)="onCloseSuccess()">OK</button>
+  }
+  @else {
+    <button mat-flat-button class="ok-button" (click)="onCloseError()">OK</button>
+  }
+</div>

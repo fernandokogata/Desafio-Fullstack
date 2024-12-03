@@ -1,0 +1,13 @@
+<div class="dialog-container">
+  <h3 class="header-text">{{data.title}}</h3>
+  <mat-divider></mat-divider>
+  <mat-dialog-content>
+    <div>
+      {{data.message}}
+    </div>
+    <div class="button-field">
+      <button mat-flat-button type="submit" class="button-delete" (click)="onConfirm()">{{data.title}}</button>
+      <button mat-flat-button type="button" class="button-close" (click)="onCancel()">Cancelar</button>
+    </div>
+  </mat-dialog-content>
+</div>

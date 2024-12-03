@@ -1,0 +1,51 @@
+<div class="page">
+  <mat-card appearance="outlined" class="card-content">
+    <h3>NÍVEIS</h3>
+    <form (ngSubmit)="filter()">
+      <div class="search-row">
+        <div>
+          <mat-form-field appearance="outline" class="search">
+            <mat-label>Buscar por Nível</mat-label>
+            <input matInput [formControl]="form.controls.search" required>
+          </mat-form-field>
+          <button mat-button class="search-button" type="submit">Buscar</button>
+        </div>
+        <div>
+          <button mat-button class="create-button" type="button" (click)="openCreateDialog()">Criar Nível</button>
+        </div>
+      </div>
+    </form>
+    <mat-divider></mat-divider>
+    <div class="table-container">
+      <table mat-table [dataSource]="sortedData" matSort (matSortChange)="sortData($event)" class="table-material">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="id"> ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="nivel">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nivel"> Nível </th>
+          <td mat-cell *matCellDef="let element"> {{element.nivel}} </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button class="update-button" type="button" (click)="openUpdateDialog(element)">Alterar</button>
+            <button mat-button class="delete-button" type="button" (click)="openDeleteDialog(element)">Excluir</button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <ng-container>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" style="height: 56px; text-align: center;" colspan="4">Sem dados para o filtro:
+              "{{form.value.search}}"</td>
+          </tr>
+        </ng-container>
+      </table>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-paginator [length]="totalRegisters" [pageIndex]="pageIndex" [pageSize]="pageSize" aria-label="Select page"
+      showFirstLastButtons="true" (page)="refresh($event)">
+    </mat-paginator>
+  </mat-card>
+</div>
