@@ -46,7 +46,6 @@ class EloquentNivelRepository implements NivelRepositoryInterface
 
     public function find(array|string|null $queryParams): LengthAwarePaginator|Collection|JsonResponse|Response
     {
-        dd($queryParams);
         $orderBy = ['asc', 'desc'];
         $columns = ['id', 'nivel'];
         $query = NivelModel::query();
